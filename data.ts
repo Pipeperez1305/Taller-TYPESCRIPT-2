@@ -24,8 +24,8 @@ console.log(series);
     function darPromedioSeasons():number{
     let totalSeasons: number=0;
     let totalSeries: number=0;
-    for (let index = 0; index < series.length; index++){
-        let serie: Serie = series[index];
+    for (const element of series){
+        let serie: Serie = element;
         totalSeries+=1;
         totalSeasons+= serie.seasons;
     }

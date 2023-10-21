@@ -11,8 +11,9 @@ console.log(series);
 function darPromedioSeasons() {
     var totalSeasons = 0;
     var totalSeries = 0;
-    for (var index = 0; index < series.length; index++) {
-        var serie = series[index];
+    for (var _i = 0, series_1 = series; _i < series_1.length; _i++) {
+        var element = series_1[_i];
+        var serie = element;
         totalSeries += 1;
         totalSeasons += serie.seasons;
     }
@@ -37,8 +38,8 @@ function mostrarPromedio() {
 }
 function mostrarSeries() {
     var seriesTbody = document.createElement("tbody");
-    for (var _i = 0, series_1 = series; _i < series_1.length; _i++) {
-        var serie = series_1[_i];
+    for (var _i = 0, series_2 = series; _i < series_2.length; _i++) {
+        var serie = series_2[_i];
         var trElement = document.createElement("tr");
         trElement.innerHTML = "\n          <th scope=\"row\">".concat(serie.num, "</th>\n          <td><a href=\"").concat(serie.enlace, "\">").concat(serie.name, "</a></td>\n          <td>").concat(serie.chanel, "</td>\n          <td>").concat(serie.seasons, "</td>");
         seriesTbody.appendChild(trElement);
