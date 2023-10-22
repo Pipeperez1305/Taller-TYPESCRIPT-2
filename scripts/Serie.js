@@ -1,5 +1,5 @@
-var Serie = /** @class */ (function () {
-    function Serie(num, name, chanel, seasons, description, enlace, imagen) {
+export class Serie {
+    constructor(num, name, chanel, seasons, description, enlace, imagen) {
         this.num = num;
         this.name = name;
         this.chanel = chanel;
@@ -8,6 +8,4 @@ var Serie = /** @class */ (function () {
         this.enlace = enlace;
         this.imagen = imagen;
     }
-    return Serie;
-}());
-export { Serie };
+}

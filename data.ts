@@ -40,13 +40,14 @@ mostrarPromedio();
 mostrarSeries();
 
 function mostrarInfoSerie(serie: Serie):void{
+
     let tbodySerie = document.createElement("tbody");
     tbodySerie.innerHTML=`<div class="card mb-3">
      <img src="${serie.imagen}" class="card-img-top my-3" alt="...">
      <div class="card-body">
        <h5 class="card-title">${serie.name}</h5>
        <p class="card-text">${serie.description}</p>
-       <p><a href="${serie.enlace}">https://www.amc.com/shows/breaking-bad</a>.</p>
+       <p><a href="${serie.enlace}">${serie.enlace}</a>.</p>
      </div>
  </div>`
      serieDescriptionTable.appendChild(tbodySerie);
@@ -67,14 +68,38 @@ function mostrarSeries():void{
         let trElement:HTMLElement= document.createElement("tr");
         trElement.innerHTML=`
           <th scope="row">${serie.num}</th>
-          <td><a href="${serie.enlace}">${serie.name}</a></td>
+          <td><a href="#" class = "serie-link" data-num="${serie.num}">${serie.name}</a></td>
           <td>${serie.chanel}</td>
-          <td>${serie.seasons}</td>`;
+          <td>${serie.seasons}</td>
+          `;
         seriesTbody.appendChild(trElement);
     }
     seriesTable.appendChild(seriesTbody);
 
     
+
+let tarjetaActual: HTMLElement | null = null;
+
+seriesTable.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    if (target.classList.contains('serie-link')) {
+        event.preventDefault(); 
+        const serieNum = target.getAttribute('data-num');
+        if (serieNum) {
+            const selectedSerie = series.find((s) => s.num === parseInt(serieNum));
+            if (selectedSerie) {
+                if (tarjetaActual) {
+                    tarjetaActual.remove();
+                }
+                mostrarInfoSerie(selectedSerie);
+
+                tarjetaActual = serieDescriptionTable.querySelector('.card');
+
+            }
+        }
+    }
+});
+
 
 
 

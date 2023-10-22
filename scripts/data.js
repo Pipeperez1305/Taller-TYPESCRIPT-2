@@ -1,5 +1,5 @@
 import { Serie } from "./Serie.js";
-export var series = [
+export const series = [
     new Serie(1, "Breaking Bad", "AMC", 5, "Set and filmed in Albuquerque, New Mexico, the series tells the story of Walter White, a struggling and depressed high school chemistry teacher who is diagnosed with lung cancer", "https://www.amc.com/shows/breaking-bad", "BreakingBad.jpg"),
     new Serie(2, "Orange Is the New Black", "Netflix", 6, "The series begins revolving around Piper Chapman, a woman in her thirties living in New York City who is sentenced to 15 months in Litchfield Penitentiary", "https://www.netflix.com/co/title/70242311", "Orange.jpg"),
     new Serie(3, "Game of Thrones", "HBO", 7, "American fantasy drama", "https://www.hbo.com/game-of-thrones", "Got.jpg"),
@@ -9,40 +9,68 @@ export var series = [
 ];
 console.log(series);
 function darPromedioSeasons() {
-    var totalSeasons = 0;
-    var totalSeries = 0;
-    for (var _i = 0, series_1 = series; _i < series_1.length; _i++) {
-        var element = series_1[_i];
-        var serie = element;
+    let totalSeasons = 0;
+    let totalSeries = 0;
+    for (const element of series) {
+        let serie = element;
         totalSeries += 1;
         totalSeasons += serie.seasons;
     }
-    var promedio = (totalSeasons / totalSeries);
+    let promedio = (totalSeasons / totalSeries);
     return promedio;
 }
-var serieDescriptionTable = document.getElementById("serie");
-var averageTable = document.getElementById("promedio");
-var seriesTable = document.getElementById("series");
+let serieDescriptionTable = document.getElementById("serie");
+let averageTable = document.getElementById("promedio");
+let seriesTable = document.getElementById("series");
 mostrarPromedio();
 mostrarSeries();
 function mostrarInfoSerie(serie) {
-    var tbodySerie = document.createElement("tbody");
-    tbodySerie.innerHTML = "<div class=\"card mb-3\">\n     <img src=\"".concat(serie.imagen, "\" class=\"card-img-top my-3\" alt=\"...\">\n     <div class=\"card-body\">\n       <h5 class=\"card-title\">").concat(serie.name, "</h5>\n       <p class=\"card-text\">").concat(serie.description, "</p>\n       <p><a href=\"").concat(serie.enlace, "\">https://www.amc.com/shows/breaking-bad</a>.</p>\n     </div>\n </div>");
+    let tbodySerie = document.createElement("tbody");
+    tbodySerie.innerHTML = `<div class="card mb-3">
+     <img src="${serie.imagen}" class="card-img-top my-3" alt="...">
+     <div class="card-body">
+       <h5 class="card-title">${serie.name}</h5>
+       <p class="card-text">${serie.description}</p>
+       <p><a href="${serie.enlace}">${serie.enlace}</a>.</p>
+     </div>
+ </div>`;
     serieDescriptionTable.appendChild(tbodySerie);
 }
 function mostrarPromedio() {
-    var promedioSeasons = darPromedioSeasons();
-    var trElement = document.createElement("tr");
-    trElement.innerHTML = "<td>  Seasons average: ".concat(promedioSeasons, "</td>");
+    let promedioSeasons = darPromedioSeasons();
+    let trElement = document.createElement("tr");
+    trElement.innerHTML = `<td>  Seasons average: ${promedioSeasons}</td>`;
     averageTable.appendChild(trElement);
 }
 function mostrarSeries() {
-    var seriesTbody = document.createElement("tbody");
-    for (var _i = 0, series_2 = series; _i < series_2.length; _i++) {
-        var serie = series_2[_i];
-        var trElement = document.createElement("tr");
-        trElement.innerHTML = "\n          <th scope=\"row\">".concat(serie.num, "</th>\n          <td><a href=\"").concat(serie.enlace, "\">").concat(serie.name, "</a></td>\n          <td>").concat(serie.chanel, "</td>\n          <td>").concat(serie.seasons, "</td>");
+    let seriesTbody = document.createElement("tbody");
+    for (let serie of series) {
+        let trElement = document.createElement("tr");
+        trElement.innerHTML = `
+          <th scope="row">${serie.num}</th>
+          <td><a href="#" class = "serie-link" data-num="${serie.num}">${serie.name}</a></td>
+          <td>${serie.chanel}</td>
+          <td>${serie.seasons}</td>
+          `;
         seriesTbody.appendChild(trElement);
     }
     seriesTable.appendChild(seriesTbody);
+    let tarjetaActual = null;
+    seriesTable.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target.classList.contains('serie-link')) {
+            event.preventDefault();
+            const serieNum = target.getAttribute('data-num');
+            if (serieNum) {
+                const selectedSerie = series.find((s) => s.num === parseInt(serieNum));
+                if (selectedSerie) {
+                    if (tarjetaActual) {
+                        tarjetaActual.remove();
+                    }
+                    mostrarInfoSerie(selectedSerie);
+                    tarjetaActual = serieDescriptionTable.querySelector('.card');
+                }
+            }
+        }
+    });
 }
